@@ -8,7 +8,7 @@ class Field:
         return str(self.value)
 
 class Name(Field):
-		pass
+    pass
 
 class Phone(Field):
     def __init__(self, value):
@@ -25,23 +25,24 @@ class Record:
         self.phones.append(Phone(phone))
 
     def remove_phone(self, phone):
-        for phone_in_lst in self.phones:
-              if phone_in_lst.value == phone:
-                self.phones.remove(phone)
-                return
+        found_phone = self.find_phone(phone)
+        if found_phone:
+            self.phones.remove(found_phone)
+            return
         raise ValueError("Phone not found")
     
     def edit_phone(self, old_phone, new_phone):
-        for phone_in_lst in self.phones:
-            if phone_in_lst.value == old_phone:
-                self.phones[self.phones.index(phone_in_lst)] = Phone(new_phone)
-                return
+        phone_obj = self.find_phone(old_phone)
+        if phone_obj:
+            self.remove_phone(old_phone)
+            self.add_phone(new_phone)
+            return
         raise ValueError("Old phone not found")
     
     def find_phone(self, phone):
         for phone_in_lst in self.phones:
             if phone_in_lst.value == phone:
-                return phone_in_lst.value
+                return phone_in_lst
         return None
 
     def __str__(self):
